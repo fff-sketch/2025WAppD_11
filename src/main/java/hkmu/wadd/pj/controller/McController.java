@@ -34,7 +34,13 @@ public class McController {
         model.addAttribute("votes", votes);
         return "mc";
     }
-
+    @GetMapping("/mc1")
+    public String mc1(Model model) {
+        model.addAttribute("questions", mcQuestions);
+        model.addAttribute("options", mcOptions);
+        model.addAttribute("votes", votes);
+        return "mc1";
+    }
 
     @PostMapping("/mc/vote")
     public String handleVote(
@@ -58,6 +64,23 @@ public class McController {
             request.setAttribute("error", e.getMessage());
             return "mcerror";
         }
+    }
+    @PostMapping("/mc1/vote")
+    public String handleVote1(
+            @RequestParam(value = "questionId") int questionId,
+            @RequestParam(value = "optionId") String optionId, // Assuming optionId corresponds to the value of the selected option
+            Model model) {
+
+        // Assuming you have a list of questions and options
+        String selectedQuestion = mcQuestions[questionId]; // Get the selected question
+        String selectedOption = optionId; // The selected answer from the form
+
+        // Store the results in the model
+        model.addAttribute("selectedQuestion", selectedQuestion);
+        model.addAttribute("selectedOption", selectedOption);
+
+        // Redirect to the success page
+        return "votesuccess"; // The name of the JSP page to show success
     }
 
 }

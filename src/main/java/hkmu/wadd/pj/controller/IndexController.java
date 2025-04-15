@@ -16,8 +16,5 @@ public class IndexController {
         return "lecture";
     }
 
-    @GetMapping("/mc1.jsp")
-    public String mc1() {
-        return "mc1";
-    }
+
 }

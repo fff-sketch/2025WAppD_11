@@ -1,45 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF- 8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Favorite University Poll</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        h1 {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .vote-button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-        }
-    </style>
 </head>
 <body>
+<c:set var="question" value="${questions[0]}"/> <!-- Correctly use 'value' instead of 'values' -->
 
-<h1>What is your favourite University?</h1>
+<div class="poll">
+    <h1>${question}</h1><!-- Display the question -->
 
-<form id="universityPoll">
-    <label>
-        <input type="radio" name="university" value="MU"> MU (0 votes)
-    </label><br>
-    <label>
-        <input type="radio" name="university" value="MUHK"> MUHK (0 votes)
-    </label><br>
-    <label>
-        <input type="radio" name="university" value="Metropolitan University"> Metropolitan University (0 votes)
-    </label><br>
-    <label>
-        <input type="radio" name="university" value="HKMU"> HKMU (0 votes)
-    </label><br>
+    <form method="post" action="mc1/vote">
+        <input type="hidden" name="questionId" value="0"> <!-- Set to 0 for the first question -->
 
-    <button type="button" class="vote-button" onclick="alert('Thank you for voting!')">Vote</button>
-</form>
+        <c:if test="${not empty options[0]}">
+            <c:forEach var="option" items="${options[0]}"> <!-- Loop through the options for the first question -->
+                <div class="option">
+                    <input type="radio" name="optionId" value="${option}" id="${option}">
+                    <label for="${option}">${option}</label>
+                </div>
+            </c:forEach>
+        </c:if>
 
+        <input type="submit" value="Vote"/>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> <!-- CSRF token for security -->
+    </form>
+</div>
+
+<a href="index">Back to Home</a> <!-- Link to go back to home -->
 </body>
 </html>

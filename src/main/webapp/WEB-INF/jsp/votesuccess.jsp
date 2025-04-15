@@ -14,7 +14,7 @@
 <body>
 <h1>Thank you for voting!</h1>
 <p>You voted for: <strong>${selectedOption}</strong></p>
-<p>Question: ${question}</p>
+<p>Question: ${selectedQuestion}</p>
 
 <a href="${pageContext.request.contextPath}/mc">Return to polls</a>
 </body>

@@ -42,7 +42,7 @@
 </ul>
 <h1>list of multiple-choice (MC) polls</h1>
 <ul>
-    <a href="mc1.jsp"><li>What is your favourite University?</li></a>
+    <a href="mc1"><li>What is your favourite University?</li></a>
     <a href="mc"><li>How you rate your Ulife in HKMU?</li></a>
     <a href="mc"><li>Which public transport you perfer to take to school?</li></a>
     <a href="mc"><li>What facilities you want to have in HKMU?</li></a>
