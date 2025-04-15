@@ -35,6 +35,7 @@ public class McController {
         return "mc";
     }
 
+
     @PostMapping("/mc/vote")
     public String handleVote(
             @RequestParam(value ="questionId", required = false) int questionId,

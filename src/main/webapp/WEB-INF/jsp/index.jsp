@@ -40,13 +40,13 @@
     <li>Lecture 4: 2nd last Lecture</li>
     <li>Lecture 5: Last Lecture</li>
 </ul>
-<a href="mc"><h1>list of multiple-choice (MC) polls</h1></a>
+<h1>list of multiple-choice (MC) polls</h1>
 <ul>
-    <li>What is your favourite University?</li>
-    <li>How you rate your Ulife in HKMU?</li>
-    <li>Which public transport you perfer to take to school?</li>
-    <li>What facilities you want to have in HKMU?</li>
-    <li>How old are you?</li>
+    <a href="mc1.jsp"><li>What is your favourite University?</li></a>
+    <a href="mc"><li>How you rate your Ulife in HKMU?</li></a>
+    <a href="mc"><li>Which public transport you perfer to take to school?</li></a>
+    <a href="mc"><li>What facilities you want to have in HKMU?</li></a>
+    <a href="mc"><li>How old are you?</li></a>
 </ul>
 <br/>
 </body>
