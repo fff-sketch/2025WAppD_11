@@ -1,35 +1,28 @@
+<%@ page import="java.util.Map" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%@ page import="java.util.Map" %>
+
 <html>
 <head>
     <title>Course Materials</title>
 </head>
 <body>
-<h1>Web Applications: Design and Development - Course Materials</h1>
-
-<div class="lecture-list">
+<h1>Web Applications: Design and Development</h1>
+<h1>- Course Materials -</h1>
+<div>
+    <h3>lecture Number : ${lectureId}</h3>
+    <h3>lecture title : ${lectureTitle}</h3>
+    <h3>Download File : <a href="#">Download lecture notes</a></h3>
+    <h3>Comments : </h3>
     <ul>
-        <li>
-            <b>Lecture 1: HelloWorld</b>
-            <a href="#">Download lecture notes</a>
-        </li>
-        <li>
-            <b>Lecture 2: ByeWorld</b>
-            <a href="#">Download lecture notes</a>
-        </li>
-        <li>
-            <b>Lecture 3: Login/Logout</b>
-            <a href="#">Download lecture notes</a>
-        </li>
-        <li>
-            <b>Lecture 4: 2nd last Lecture</b>
-            <a href="#">Download lecture notes</a>
-        </li>
-        <li>
-            <b>Lecture 5: Last Lecture</b>
-            <a href="#">Download lecture notes</a>
-        </li>
+
     </ul>
+
+<security:authorize access="hasRole('USER')">
+</security:authorize>
 </div>
-<a href="index">Back to Home</a>
+<a href="/pj/index">Back to Home</a>
 </body>
 </html>

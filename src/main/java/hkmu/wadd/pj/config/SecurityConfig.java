@@ -5,13 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -21,7 +15,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfig{
     @Autowired
     private DataSource dataSource;
 
@@ -42,7 +36,7 @@ public class SecurityConfig {
             throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/lectures","/mc","/mcerror","/votesuccess","/mc/vote","/mc/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/lectures","/mc","/mcerror","/votesuccess","/mc/vote").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/", "/index", "/register").permitAll()
                         .requestMatchers("register").permitAll()
                         .anyRequest().permitAll()
@@ -64,6 +58,7 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .httpBasic(withDefaults());
+
         return http.build();
     }
 }

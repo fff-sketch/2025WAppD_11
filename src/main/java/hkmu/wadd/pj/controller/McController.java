@@ -1,19 +1,15 @@
 package hkmu.wadd.pj.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class McController {
-    private final String[] mcQuestions = {
+    /*private final String[] mcQuestions = {
             "What is your favourite University?",
             "How you rate your Ulife in HKMU?",
             "Which public transport you prefer to take to school?",
             "What facilities you want to have in HKMU?",
+            "How old are you?",
             "How old are you?"
     };
 
@@ -57,7 +53,7 @@ public class McController {
             request.setAttribute("error", e.getMessage());
             return "mcerror";
         }
-    }
+    }*/
 
 }
 
