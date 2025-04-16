@@ -41,7 +41,34 @@ public class McController {
         model.addAttribute("votes", votes);
         return "mc1";
     }
-
+    @GetMapping("/mc2")
+    public String mc2(Model model) {
+        model.addAttribute("questions", mcQuestions);
+        model.addAttribute("options", mcOptions);
+        model.addAttribute("votes", votes);
+        return "mc2";
+    }
+    @GetMapping("/mc3")
+    public String mc3(Model model) {
+        model.addAttribute("questions", mcQuestions);
+        model.addAttribute("options", mcOptions);
+        model.addAttribute("votes", votes);
+        return "mc3";
+    }
+    @GetMapping("/mc4")
+    public String mc4(Model model) {
+        model.addAttribute("questions", mcQuestions);
+        model.addAttribute("options", mcOptions);
+        model.addAttribute("votes", votes);
+        return "mc4";
+    }
+    @GetMapping("/mc5")
+    public String mc5(Model model) {
+        model.addAttribute("questions", mcQuestions);
+        model.addAttribute("options", mcOptions);
+        model.addAttribute("votes", votes);
+        return "mc5";
+    }
     @PostMapping("/mc/vote")
     public String handleVote(
             @RequestParam(value ="questionId", required = false) int questionId,
@@ -68,13 +95,16 @@ public class McController {
     @PostMapping("/mc1/vote")
     public String handleVote1(
             @RequestParam(value = "questionId") int questionId,
-            @RequestParam(value = "optionId") String optionId, // Assuming optionId corresponds to the value of the selected option
+            @RequestParam(value = "optionId") String optionId, // This should be the index of the selected option
             Model model) {
 
-        // Assuming you have a list of questions and options
-        String selectedQuestion = mcQuestions[questionId]; // Get the selected question
-        String selectedOption = optionId; // The selected answer from the form
+        // Convert optionId to an integer
+        int selectedOptionIndex = Integer.parseInt(optionId); // Convert string to integer
 
+        // Get the selected question and option text
+        String selectedQuestion = mcQuestions[questionId]; // Get the selected question
+        String selectedOption = mcOptions[questionId][selectedOptionIndex]; // Get the actual option text using the index
+        votes[questionId][selectedOptionIndex]++;
         // Store the results in the model
         model.addAttribute("selectedQuestion", selectedQuestion);
         model.addAttribute("selectedOption", selectedOption);
@@ -82,6 +112,85 @@ public class McController {
         // Redirect to the success page
         return "votesuccess"; // The name of the JSP page to show success
     }
+    @PostMapping("/mc2/vote")
+    public String handleVote2(
+            @RequestParam(value = "questionId") int questionId,
+            @RequestParam(value = "optionId") String optionId, // This should be the index of the selected option
+            Model model) {
 
+        // Convert optionId to an integer
+        int selectedOptionIndex = Integer.parseInt(optionId); // Convert string to integer
+
+        // Get the selected question and option text
+        String selectedQuestion = mcQuestions[questionId]; // Get the selected question
+        String selectedOption = mcOptions[questionId][selectedOptionIndex]; // Get the actual option text using the index
+        votes[questionId][selectedOptionIndex]++;
+        // Store the results in the model
+        model.addAttribute("selectedQuestion", selectedQuestion);
+        model.addAttribute("selectedOption", selectedOption);
+
+        // Redirect to the success page
+        return "votesuccess"; // The name of the JSP page to show success
+    }
+    @PostMapping("/mc3/vote")
+    public String handleVote3(
+            @RequestParam(value = "questionId") int questionId,
+            @RequestParam(value = "optionId") String optionId, // This should be the index of the selected option
+            Model model) {
+
+        // Convert optionId to an integer
+        int selectedOptionIndex = Integer.parseInt(optionId); // Convert string to integer
+
+        // Get the selected question and option text
+        String selectedQuestion = mcQuestions[questionId]; // Get the selected question
+        String selectedOption = mcOptions[questionId][selectedOptionIndex]; // Get the actual option text using the index
+        votes[questionId][selectedOptionIndex]++;
+        // Store the results in the model
+        model.addAttribute("selectedQuestion", selectedQuestion);
+        model.addAttribute("selectedOption", selectedOption);
+
+        // Redirect to the success page
+        return "votesuccess"; // The name of the JSP page to show success
+    }
+    @PostMapping("/mc4/vote")
+    public String handleVote4(
+            @RequestParam(value = "questionId") int questionId,
+            @RequestParam(value = "optionId") String optionId, // This should be the index of the selected option
+            Model model) {
+
+        // Convert optionId to an integer
+        int selectedOptionIndex = Integer.parseInt(optionId); // Convert string to integer
+
+        // Get the selected question and option text
+        String selectedQuestion = mcQuestions[questionId]; // Get the selected question
+        String selectedOption = mcOptions[questionId][selectedOptionIndex]; // Get the actual option text using the index
+        votes[questionId][selectedOptionIndex]++;
+        // Store the results in the model
+        model.addAttribute("selectedQuestion", selectedQuestion);
+        model.addAttribute("selectedOption", selectedOption);
+
+        // Redirect to the success page
+        return "votesuccess"; // The name of the JSP page to show success
+    }
+    @PostMapping("/mc5/vote")
+    public String handleVote5(
+            @RequestParam(value = "questionId") int questionId,
+            @RequestParam(value = "optionId") String optionId, // This should be the index of the selected option
+            Model model) {
+
+        // Convert optionId to an integer
+        int selectedOptionIndex = Integer.parseInt(optionId); // Convert string to integer
+
+        // Get the selected question and option text
+        String selectedQuestion = mcQuestions[questionId]; // Get the selected question
+        String selectedOption = mcOptions[questionId][selectedOptionIndex]; // Get the actual option text using the index
+        votes[questionId][selectedOptionIndex]++;
+        // Store the results in the model
+        model.addAttribute("selectedQuestion", selectedQuestion);
+        model.addAttribute("selectedOption", selectedOption);
+
+        // Redirect to the success page
+        return "votesuccess"; // The name of the JSP page to show success
+    }
 }
 

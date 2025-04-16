@@ -43,10 +43,10 @@
 <h1>list of multiple-choice (MC) polls</h1>
 <ul>
     <a href="mc1"><li>What is your favourite University?</li></a>
-    <a href="mc"><li>How you rate your Ulife in HKMU?</li></a>
-    <a href="mc"><li>Which public transport you perfer to take to school?</li></a>
-    <a href="mc"><li>What facilities you want to have in HKMU?</li></a>
-    <a href="mc"><li>How old are you?</li></a>
+    <a href="mc2"><li>How you rate your Ulife in HKMU?</li></a>
+    <a href="mc3"><li>Which public transport you perfer to take to school?</li></a>
+    <a href="mc4"><li>What facilities you want to have in HKMU?</li></a>
+    <a href="mc5"><li>How old are you?</li></a>
 </ul>
 <br/>
 </body>

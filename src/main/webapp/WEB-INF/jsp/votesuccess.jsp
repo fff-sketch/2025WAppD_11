@@ -16,6 +16,6 @@
 <p>You voted for: <strong>${selectedOption}</strong></p>
 <p>Question: ${selectedQuestion}</p>
 
-<a href="${pageContext.request.contextPath}/mc">Return to polls</a>
+<a href="${pageContext.request.contextPath}/index">Back to Home</a>
 </body>
 </html>
