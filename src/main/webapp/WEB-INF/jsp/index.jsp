@@ -1,3 +1,4 @@
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -48,6 +49,9 @@
     <li>What facilities you want to have in HKMU?</li>
     <li>How old are you?</li>
 </ul>
+<security:authorize access="hasRole('ADMIN')">
+    <a href="list">list</a>
+</security:authorize>
 <br/>
 </body>
 </html>

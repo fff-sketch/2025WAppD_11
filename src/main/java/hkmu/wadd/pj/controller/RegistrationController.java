@@ -1,7 +1,6 @@
 package hkmu.wadd.pj.controller;
 
 import hkmu.wadd.pj.model.User;
-import hkmu.wadd.pj.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
