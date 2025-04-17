@@ -2,8 +2,7 @@ package hkmu.wadd.pj.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -42,7 +41,7 @@ public class IndexController {
     }
 
     @GetMapping("/lectures/{lectureId}")
-    public String showLectureDetails(@PathVariable int lectureId, Model model) {
+    public String showMaterialDetails(@PathVariable int lectureId, Model model) {
         String lectureTitle = lectures.get(lectureId);
         model.addAttribute("lectureId", lectureId);
         model.addAttribute("lectureTitle", lectureTitle);
@@ -57,6 +56,39 @@ public class IndexController {
         model.addAttribute("question", question);
         model.addAttribute("options", options);
         return "mc";
+    }
+
+    @GetMapping("/editMaterial")
+    public String editMaterial(Model model) {
+        model.addAttribute("lectures", lectures);
+        return "editMaterial";
+    }
+    @PostMapping("/editMaterial/removeLecture")
+    public String removeLecture(@ModelAttribute int lectureId) {
+        System.out.println(lectureId);
+        lectures.remove(lectureId);
+        return "editMaterial";
+    }
+    /*@PostMapping("/editMaterial/{lectureId}")
+    public String editMaterial(@PathVariable int lectureId) {
+        lectures.remove(lectureId);
+        return "redirect:/editMaterial";
+    }*/
+    @PostMapping("/editMaterial/addLecture")
+    public String addLecture(@RequestParam("lectureId") int id, @RequestParam("lectureTitle") String title) {
+        lectures.put(id, title);
+        return "editMaterial";
+    }
+    /*@PostMapping("/addLecture")
+    public String addLecture(@RequestParam("lectureId") int id, @RequestParam("lectureTitle") String title) {
+        lectures.put(id, title);
+        return "redirect:/lectures";
+    }*/
+
+    @GetMapping("/editPolling")
+    public String editPolling(Model model) {
+        model.addAttribute("mcQuestions", mcQuestions);
+        return "editPolling";
     }
 
     @GetMapping("/list")

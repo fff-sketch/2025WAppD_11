@@ -37,7 +37,7 @@ public class SecurityConfig{
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/lectures","/mc","/mcerror","/votesuccess","/mc/vote").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/", "/index", "/register").permitAll()
+                        .requestMatchers("/", "/index", "/register", "/editMaterial", "/editMaterial/**", "/addLecture", "/editPolling", "/editPolling/**").permitAll()
                         .requestMatchers("register").permitAll()
                         .anyRequest().permitAll()
                 )
