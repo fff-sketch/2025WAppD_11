@@ -4,10 +4,8 @@ import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -20,10 +18,14 @@ public class User implements UserDetails{
     private String username;
     @Column(name = "password")
     private String password;
-    @Column(unique = true)
+    //@Column(unique = true)
+    @Column(name = "fullName")
     private String fullName;
+    @Column(name = "email")
     private String email;
+    @Column(name = "phone")
     private String phone;
+
 
 
     public Long getId() { return id; }

@@ -1,11 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>HKMU Poll System</title>
+    <title>Polling Page</title>
 </head>
 <body>
 <h1>Web Applications: Design and Development</h1>
-<h1>- Course Polling -</h1>
+<h2>- Course Polling -</h2>
+<a href="/pj/index">Back to Home</a><br><br>
 <h3>Question ${mcId} : ${question}</h3>
 <div>
     <form method="post" action="mc/vote">
@@ -14,7 +15,7 @@
             <div>
                 <input type="radio" name="optionId" value="${oStatus.index}" id="opt_${oStatus.index}">
                 <label for="opt_${oStatus.index}">
-                        ${option}<span>(${votes[mcId-1][oStatus.index]} votes)</span>
+                        ${option}<span>( ${votes[mcId-1][oStatus.index]} votes )</span>
                 </label>
             </div>
         </c:forEach>
@@ -22,7 +23,12 @@
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     </form>
 </div>
+<h3>Comments : </h3>
+<div>
+    <ul>
 
+    </ul>
+</div>
 
 <!--
 <c:forEach var="question" items="${questions}" varStatus="qStatus">
@@ -46,6 +52,5 @@
     </div>
 </c:forEach>
 -->
-<a href="/index">Back to Home</a>
 </body>
 </html>
