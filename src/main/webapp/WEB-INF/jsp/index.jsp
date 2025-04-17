@@ -32,22 +32,66 @@
         <a href="<c:url value='/register'/>">Register</a>
     </form>
 </security:authorize>
-<a href="lectures"><h1>list of lectures</h1></a>
+
+<h3>list of lectures :</h3>
+
 <ul>
-    <li>Lecture 1: HelloWorld</li>
-    <li>Lecture 2: ByeWorld</li>
-    <li>Lecture 3: Login/Logout</li>
-    <li>Lecture 4: 2nd last Lecture</li>
-    <li>Lecture 5: Last Lecture</li>
+    <c:forEach var="lecture" items="${lectures}">
+        <li>
+            <a href="lectures/${lecture.key}">Lecture ${lecture.key}: ${lecture.value}</a>
+        </li>
+    </c:forEach>
 </ul>
-<h1>list of multiple-choice (MC) polls</h1>
+<security:authorize access="hasRole('USER')">
+</security:authorize>
+<security:authorize access="hasRole('ADMIN')">
+    <button onclick="toggleForm()">Add New Lecture</button>
+    <div id="addLectureForm" style="display: block;">
+        <form action="addLecture" method="post">
+            Lecture ID: <input type="text" name="lectureId"><br>
+            Lecture Title: <input type="text" name="lectureTitle"><br>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <ul>
+        <c:forEach var="lecture" items="${lectures}">
+            <li>
+                <a href="lectures">Lecture ${lecture.key}: ${lecture.value}</a>
+                <a href="#">delete</a>
+            </li>
+        </c:forEach>
+    </ul>
+</security:authorize>
+
+<h3>list of multiple-choice (MC) polls :</h3>
 <ul>
-    <a href="mc1"><li>What is your favourite University?</li></a>
-    <a href="mc2"><li>How you rate your Ulife in HKMU?</li></a>
-    <a href="mc3"><li>Which public transport you perfer to take to school?</li></a>
-    <a href="mc4"><li>What facilities you want to have in HKMU?</li></a>
-    <a href="mc5"><li>How old are you?</li></a>
+    <c:forEach var="mcQuestion" items="${mcQuestions}">
+        <li>
+            <a href="mc/${mcQuestion.key}">Question ${mcQuestion.key}: ${mcQuestion.value}</a>
+        </li>
+    </c:forEach>
 </ul>
-<br/>
+
+<security:authorize access="hasRole('ADMIN')">
+    <a href="list"><h1>List of User</h1></a>
+</security:authorize>
+
+<c:if test="${fn:length(entries) == 0}">
+    <p>There is no message yet.</p>
+</c:if>
+<c:if test="${fn:length(entries) > 0}">
+    <ul>
+        <c:forEach var="entry" items="${entries}">
+            <c:url value="/GuestBook/EditComment/${entry.id}" var="myURL"/>
+            <li>
+                #${entry.id} - ${entry.name} (<fmt:formatDate value="${entry.date}" pattern="yyyy-MM-dd"/>):
+                [<a href="${myURL}">Edit</a>] <br/>
+                <c:out value="${entry.message}" escapeXml="true"/><br/>
+            </li>
+        </c:forEach>
+    </ul>
+</c:if>
+<p><a href="addComment">Add Comment</a></p>
 </body>
 </html>

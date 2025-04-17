@@ -6,9 +6,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Controller
 public class McController {
+    /*
+    private  final Map<Integer, String> questions=new ConcurrentHashMap<>();
+    private  final Map<Integer, String> options=new ConcurrentHashMap<>();
+    public McController(){
+        this.questions.put(1, "What is your name?");
+        this.questions.put(2, "What is your favorite color?");
+        this.questions.put(3, "What is your age?");
+        this.questions.put(4, "What is your height?");
+        this.questions.put(5, "What is your weight?");
+
+    }
     private final String[] mcQuestions = {
             "What is your favourite University?",
             "How you rate your Ulife in HKMU?",
@@ -191,6 +204,6 @@ public class McController {
 
         // Redirect to the success page
         return "votesuccess"; // The name of the JSP page to show success
-    }
+    }*/
 }
 
