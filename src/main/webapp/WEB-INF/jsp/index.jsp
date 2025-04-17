@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>JSP - HH</title>
+    <title>Home Page</title>
 </head>
 <body>
 <h1>Web Applications: Design and Development!</h1>
@@ -34,7 +34,11 @@
 </security:authorize>
 
 <h3>list of lectures :</h3>
-
+<security:authorize access="hasRole('USER')">
+</security:authorize>
+<security:authorize access="hasRole('ADMIN')">
+</security:authorize>
+<a href="editMaterial">Edit</a>
 <ul>
     <c:forEach var="lecture" items="${lectures}">
         <li>
@@ -42,29 +46,13 @@
         </li>
     </c:forEach>
 </ul>
+
+<h3>list of multiple-choice (MC) polls :</h3>
 <security:authorize access="hasRole('USER')">
 </security:authorize>
 <security:authorize access="hasRole('ADMIN')">
-    <button onclick="toggleForm()">Add New Lecture</button>
-    <div id="addLectureForm" style="display: block;">
-        <form action="addLecture" method="post">
-            Lecture ID: <input type="text" name="lectureId"><br>
-            Lecture Title: <input type="text" name="lectureTitle"><br>
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-
-    <ul>
-        <c:forEach var="lecture" items="${lectures}">
-            <li>
-                <a href="lectures">Lecture ${lecture.key}: ${lecture.value}</a>
-                <a href="#">delete</a>
-            </li>
-        </c:forEach>
-    </ul>
 </security:authorize>
-
-<h3>list of multiple-choice (MC) polls :</h3>
+<a href="editPolling">Edit</a>
 <ul>
     <c:forEach var="mcQuestion" items="${mcQuestions}">
         <li>
@@ -77,21 +65,5 @@
     <a href="list"><h1>List of User</h1></a>
 </security:authorize>
 
-<c:if test="${fn:length(entries) == 0}">
-    <p>There is no message yet.</p>
-</c:if>
-<c:if test="${fn:length(entries) > 0}">
-    <ul>
-        <c:forEach var="entry" items="${entries}">
-            <c:url value="/GuestBook/EditComment/${entry.id}" var="myURL"/>
-            <li>
-                #${entry.id} - ${entry.name} (<fmt:formatDate value="${entry.date}" pattern="yyyy-MM-dd"/>):
-                [<a href="${myURL}">Edit</a>] <br/>
-                <c:out value="${entry.message}" escapeXml="true"/><br/>
-            </li>
-        </c:forEach>
-    </ul>
-</c:if>
-<p><a href="addComment">Add Comment</a></p>
 </body>
 </html>
