@@ -42,9 +42,9 @@ public class SecurityConfig {
             throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/lectures","/mc","/mcerror","/votesuccess","/mc/vote","/mc/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/", "/index", "/register").permitAll()
-                        .requestMatchers("register").permitAll()
+                        .requestMatchers(   "/lectures","/mc","/mcerror","/votesuccess","/mc/vote","/addComment").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/", "/index", "/register","/mc1","/mc1/vote").permitAll()
+                        .requestMatchers("register","/mc1","/mc1/vote").permitAll()
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
