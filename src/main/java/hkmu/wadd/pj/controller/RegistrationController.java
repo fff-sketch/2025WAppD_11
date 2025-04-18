@@ -1,7 +1,6 @@
 package hkmu.wadd.pj.controller;
 
 import hkmu.wadd.pj.model.User;
-import hkmu.wadd.pj.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
@@ -31,20 +30,26 @@ public class RegistrationController {
     @Transactional
     public String processRegistration(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
 
-        Integer count = jdbcTemplate.queryForObject(
-                "SELECT COUNT(*) FROM users WHERE username = ?", Integer.class, user.getUsername());
+        Integer count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM users WHERE username = ?", Integer.class, user.getUsername());
         if (count != null && count > 0) {
             redirectAttributes.addFlashAttribute("error", "Username already exists. Please choose a different username.");
             return "register";
         }
+
         String passwordWithNoop = "{noop}" + user.getPassword();
-        jdbcTemplate.update("INSERT INTO users (username, password) VALUES (?, ?)",
-                user.getUsername(), passwordWithNoop);
+        jdbcTemplate.update(
+                "INSERT INTO users (username, password, fullName, email, phone) VALUES (?, ?, ?, ?, ?)",
+                user.getUsername(),
+                passwordWithNoop,
+                user.getFullName(),
+                user.getEmail(),
+                user.getPhone());
+        jdbcTemplate.update(
+                "INSERT INTO user_roles (username, role) VALUES (?, ?)",
+                user.getUsername(),
+                "ROLE_USER");
 
-        jdbcTemplate.update("INSERT INTO user_roles (username, role) VALUES (?, ?)",
-                user.getUsername(), "ROLE_USER");
-
-        return "index";
+        return "redirect:/index";
 
     }
 }
