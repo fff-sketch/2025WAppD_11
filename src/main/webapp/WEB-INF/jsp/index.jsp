@@ -5,6 +5,7 @@
 </head>
 <body>
 <h1>Web Applications: Design and Development!</h1>
+<h2>- Home -</h2>
 <security:authorize access="isAuthenticated()">
     <p>Hello, <security:authentication property="principal.username"/>!</p>
     <c:url var="logoutUrl" value="/logout"/>
@@ -15,7 +16,7 @@
 </security:authorize>
 
 <security:authorize access="!isAuthenticated()">
-    <h2>Login</h2>
+    <h3>Login</h3>
     <c:if test="${param.error != null}">
         <p style="color: red;">Invalid username or password</p>
     </c:if>
@@ -33,37 +34,41 @@
     </form>
 </security:authorize>
 
-<h3>list of lectures :</h3>
+<h3>List of lectures :
+    <a href="editMaterial"> Edit </a>
+</h3>
 <security:authorize access="hasRole('USER')">
 </security:authorize>
 <security:authorize access="hasRole('ADMIN')">
 </security:authorize>
-<a href="editMaterial">Edit</a>
 <ul>
-    <c:forEach var="lecture" items="${lectures}">
+    <c:forEach var="lecture" items="${materials}">
         <li>
-            <a href="lectures/${lecture.key}">Lecture ${lecture.key}: ${lecture.value}</a>
+            <a href="materials/${lecture.key}">Lecture ${lecture.key}: ${lecture.value}</a>
         </li>
     </c:forEach>
 </ul>
 
-<h3>list of multiple-choice (MC) polls :</h3>
+<h3>List of polling :
+    <a href="editPolling"> Edit </a>
+</h3>
 <security:authorize access="hasRole('USER')">
 </security:authorize>
 <security:authorize access="hasRole('ADMIN')">
 </security:authorize>
-<a href="editPolling">Edit</a>
 <ul>
     <c:forEach var="mcQuestion" items="${mcQuestions}">
         <li>
-            <a href="mc/${mcQuestion.key}">Question ${mcQuestion.key}: ${mcQuestion.value}</a>
+            <a href="polling/${mcQuestion.key}">Question ${mcQuestion.key}: ${mcQuestion.value}</a>
         </li>
     </c:forEach>
 </ul>
 
 <security:authorize access="hasRole('ADMIN')">
-    <a href="list"><h1>List of User</h1></a>
 </security:authorize>
+<h3>Comment History : <a href="commentHistory"> Go </a></h3>
+<h3>Voting History : <a href="votingHistory"> Go </a></h3>
+<h3>List of User : <a href="userList"> Go </a></h3>
 
 </body>
 </html>
