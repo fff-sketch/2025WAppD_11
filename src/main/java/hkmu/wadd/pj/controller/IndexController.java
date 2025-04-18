@@ -1,11 +1,12 @@
 package hkmu.wadd.pj.controller;
 
+import hkmu.wadd.pj.model.CommentMaterial;
+import hkmu.wadd.pj.model.CommentPolling;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Date;
@@ -15,18 +16,22 @@ import java.util.concurrent.ConcurrentHashMap;
 @Controller
 public class IndexController {
     private volatile int commentIdSequence = 1;
-    private final Map<Integer, comment> entries = new ConcurrentHashMap<>();
-    private final Map<Integer, String> lectures = new ConcurrentHashMap<>();
+    private int materialTableIndex = 0;
+    private int pollingTableIndex = 0;
+    //private final Map<Integer, CommentMaterial> entries = new ConcurrentHashMap<>();
+    private final Map<Integer, CommentMaterial> mComments = new ConcurrentHashMap<>();
+    private final Map<Integer, CommentPolling> pComments = new ConcurrentHashMap<>();
+    private final Map<Integer, String> materials = new ConcurrentHashMap<>();
     private final Map<Integer, String> mcQuestions = new ConcurrentHashMap<>();
     private final Map<Integer, String[]> mcOptions = new ConcurrentHashMap<>();
     private int[][] votes = new int[5][4];
 
     public IndexController() {
-        this.lectures.put(1, "HelloWorld");
-        this.lectures.put(2, "ByeWorld");
-        this.lectures.put(3, "Login/Logout");
-        this.lectures.put(4, "2nd last Lecture");
-        this.lectures.put(5, "Last Lecture");
+        this.materials.put(1, "HelloWorld");
+        this.materials.put(2, "ByeWorld");
+        this.materials.put(3, "Login/Logout");
+        this.materials.put(4, "2nd last Lecture");
+        this.materials.put(5, "Last Lecture");
 
         this.mcQuestions.put(1, "What is your favourite University?");
         this.mcQuestions.put(2, "How you rate your Ulife in HKMU?");
@@ -47,90 +52,158 @@ public class IndexController {
 
     @GetMapping({"/", "/index"})
     public String index(Model model) {
-        model.addAttribute("lectures", lectures);
+        model.addAttribute("materials", materials);
         model.addAttribute("mcQuestions", mcQuestions);
-        model.addAttribute("entries", entries.values());
         return "index";
     }
 
-    @GetMapping("/lectures/{lectureId}")
-    public String showLectureDetails(@PathVariable int lectureId, Model model) {
-        String lectureTitle = lectures.get(lectureId);
-        model.addAttribute("lectureId", lectureId);
-        model.addAttribute("lectureTitle", lectureTitle);
-        return "lecture";
+    @GetMapping("/materials/{materialId}")
+    public String showMaterialDetails(@PathVariable int materialId, Model model) {
+        String materialTitle = materials.get(materialId);
+        model.addAttribute("materialId", materialId);
+        model.addAttribute("materialTitle", materialTitle);
+        model.addAttribute("mComments", mComments.values());
+        model.addAttribute("index",materialTableIndex);
+        return "material";
     }
-    @GetMapping("/lectures/{lectureId}/addComment")
+    @GetMapping("/materials/{materialId}/addMComment")
+    public ModelAndView addCommentForm(@PathVariable int materialId) {
+        ModelAndView modelAndView = new ModelAndView("addMComment");
+        modelAndView.addObject("mCmEntry", new CommentMaterial()); // Ensure 'Comment' is capitalized (Java convention)
+        modelAndView.addObject("materialId", materialId); // Pass materialId to the form
+        return modelAndView;
+    }
+    @PostMapping("/materials/{materialId}/addMComment")
+    public RedirectView addCommentHandle(
+            @PathVariable int materialId,
+            @ModelAttribute("mCmEntry") CommentMaterial comment
+    ) {
+        Integer id = getNextCommentId();
+        comment.setId(id);
+        comment.setDate(new Date());
+        //comment.setLectureId(materialId); // Associate comment with the lecture
+        this.mComments.put(id, comment);
+        System.out.println("Comment added: " + comment);
+        System.out.println("mComments put: " + mComments);
+        return new RedirectView("/pj/materials/" + materialId); // Redirect back to the lecture
+    }
+    /*backup*/
+    /*@GetMapping("/materials/{materialId}/addMComment")
     public ModelAndView addCommentForm() {
-        return new ModelAndView("addComment", "entry", new comment());
+        return new ModelAndView("addMComment", "mCmEntry", new Comment());
     }
-    @PostMapping("/lectures/{lectureId}/addComment")
-    public View addCommentHandle(@ModelAttribute("entry") comment c) {
+    @PostMapping("/materials/{materialId}/addMComment")
+    public View addCommentHandle(@ModelAttribute("mCmEntry") Comment c) {
         Integer id = getNextCommentId();
         c.setId(id);
         c.setDate(new Date());
         this.entries.put(id, c);
         return new RedirectView("."); // One way to redirect in Spring MVC
-    }
+    }*/
 
-    @GetMapping("/mc/{mcId}")
-    public String showPollDetails(@PathVariable int mcId, Model model) {
-        String question = mcQuestions.get(mcId);
-        String[] options = mcOptions.get(mcId);
-        model.addAttribute("mcId", mcId);
+    @GetMapping("/polling/{pollingId}")
+    public String showPollDetails(@PathVariable int pollingId, Model model) {
+        String question = mcQuestions.get(pollingId);
+        String[] options = mcOptions.get(pollingId);
+        model.addAttribute("pollingId", pollingId);
         model.addAttribute("question", question);
         model.addAttribute("options", options);
         model.addAttribute("votes", votes);
-        return "mc";
+        model.addAttribute("pComments", pComments.values());
+        model.addAttribute("index",pollingTableIndex);
+        return "polling";
     }
-    @PostMapping("/mc/{mcId}/vote")
+    @PostMapping("/polling/{pollingId}/vote")
     public String handleVote(
             @RequestParam(value = "questionId") int questionId,
             @RequestParam(value = "optionId") int optionId,
             Model model, HttpServletRequest request) {
-
         try {
             if (questionId < 1 || questionId > votes.length ||
                     optionId < 0 || optionId >= votes[questionId - 1].length) {
                 throw new IllegalArgumentException("Invalid question or option ID");
             }
-
             votes[questionId - 1][optionId]++;
-            //model.addAttribute("mcId", questionId);
-            model.addAttribute("selectedQuestion", mcQuestions.get(questionId)); // Changed to match votesuccess.jsp
+            model.addAttribute("selectedQuestion", mcQuestions.get(questionId)); // Changed to match voteSuccess.jsp
             model.addAttribute("selectedOption", mcOptions.get(questionId)[optionId]);
-            return "votesuccess";
+            return "voteSuccess";
         } catch (Exception e) {
             request.setAttribute("error", e.getMessage());
-            return "mcerror";
+            return "voteError";
         }
+    }
+    @GetMapping("/polling/{pollingId}/addPComment")
+    public ModelAndView addCommentForm2(@PathVariable int pollingId) {
+        ModelAndView modelAndView = new ModelAndView("addPComment");
+        modelAndView.addObject("pCmEntry", new CommentPolling()); // Ensure 'Comment' is capitalized (Java convention)
+        modelAndView.addObject("pollingId", pollingId); // Pass pollingId to the form
+        return modelAndView;
+    }
+    @PostMapping("/polling/{pollingId}/addPComment")
+    public RedirectView addCommentHandle2(
+            @PathVariable int pollingId,
+            @ModelAttribute("pCmEntry") CommentPolling comment
+    ) {
+        Integer id = getNextCommentId();
+        comment.setId(id);
+        comment.setDate(new Date());
+        //comment.setLectureId(pollingId); // Associate comment with the lecture
+        this.pComments.put(id, comment);
+        System.out.println("Comment added: " + comment);
+        System.out.println("pComments put: " + pComments);
+        return new RedirectView("/pj/polling/" + pollingId); // Redirect back to the lecture
     }
 
     @GetMapping("/editMaterial")
     public String editMaterial(Model model) {
-        model.addAttribute("lectures", lectures);
+        model.addAttribute("materials", materials);
         return "editMaterial";
+    }
+    @GetMapping("/editMaterial/addLecture")
+    public String addLecture_get(@RequestParam("materialId") int id, @RequestParam("materialTitle") String title) {
+        materials.put(id, title);
+        return "editMaterial";
+    }
+    @PostMapping("/editMaterial/addLecture")
+    public RedirectView addLecture_post(@RequestParam("materialId") int id, @RequestParam("materialTitle") String title) {
+        materials.put(id, title);
+        return new RedirectView("/pj/editMaterial");
     }
     @PostMapping("/editMaterial/removeLecture")
-    public String removeLecture(@ModelAttribute int lectureId) {
-        System.out.println(lectureId);
-        lectures.remove(lectureId);
+    public String removeLecture(@ModelAttribute int materialId) {
+        System.out.println(materialId);
+        materials.remove(materialId);
         return "editMaterial";
     }
-    /*@PostMapping("/editMaterial/{lectureId}")
-    public String editMaterial(@PathVariable int lectureId) {
-        lectures.remove(lectureId);
+    /*public ModelAndView addCommentForm(@PathVariable int materialId) {
+        ModelAndView modelAndView = new ModelAndView("addMComment");
+        modelAndView.addObject("mCmEntry", new CommentMaterial()); // Ensure 'Comment' is capitalized (Java convention)
+        modelAndView.addObject("materialId", materialId); // Pass materialId to the form
+        return modelAndView;
+    }
+    @PostMapping("/materials/{materialId}/addMComment")
+    public RedirectView addCommentHandle(
+            @PathVariable int materialId,
+            @ModelAttribute("mCmEntry") CommentMaterial comment
+    ) {
+        Integer id = getNextCommentId();
+        comment.setId(id);
+        comment.setDate(new Date());
+        //comment.setLectureId(materialId); // Associate comment with the lecture
+        this.mComments.put(id, comment);
+        System.out.println("Comment added: " + comment);
+        System.out.println("mComments put: " + mComments);
+        return new RedirectView("/pj/materials/" + materialId); // Redirect back to the lecture
+    }*/
+    /*@PostMapping("/editMaterial/{materialId}")
+    public String editMaterial(@PathVariable int materialId) {
+        materials.remove(materialId);
         return "redirect:/editMaterial";
     }*/
-    @PostMapping("/editMaterial/addLecture")
-    public String addLecture(@RequestParam("lectureId") int id, @RequestParam("lectureTitle") String title) {
-        lectures.put(id, title);
-        return "editMaterial";
-    }
     /*@PostMapping("/addLecture")
-    public String addLecture(@RequestParam("lectureId") int id, @RequestParam("lectureTitle") String title) {
-        lectures.put(id, title);
-        return "redirect:/lectures";
+    public String addLecture(@RequestParam("materialId") int id, @RequestParam("materialTitle") String title) {
+        materials.put(id, title);
+        return "redirect:/materials";
     }*/
 
     @GetMapping("/editPolling")
@@ -139,21 +212,21 @@ public class IndexController {
         return "editPolling";
     }
 
-    /*@GetMapping("/addComment")
-    public ModelAndView addCommentForm() {
-        return new ModelAndView("addComment", "entry", new comment());
+    @GetMapping({"/commentHistory"})
+    public String showCommentHistory(Model model) {
+        //model.addAttribute("", );
+        return "commentHistory";
     }
-    @PostMapping("/addComment")
-    public View addCommentHandle(@ModelAttribute("entry") comment c) {
-        Integer id = getNextCommentId();
-        c.setId(id);
-        c.setDate(new Date());
-        this.entries.put(id, c);
-        return new RedirectView("."); // One way to redirect in Spring MVC
-    }*/
 
-    @GetMapping("/list")
-    public String list() {
-        return "list";
+    @GetMapping({"/votingHistory"})
+    public String showVotingHistory(Model model) {
+        //model.addAttribute("", );
+        return "votingHistory";
+    }
+
+    @GetMapping("/userList")
+    public String shoeUseList(Model model) {
+        //model.addAttribute("", );
+        return "userList";
     }
 }

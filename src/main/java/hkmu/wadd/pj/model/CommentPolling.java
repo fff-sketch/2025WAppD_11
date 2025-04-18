@@ -1,13 +1,13 @@
-package hkmu.wadd.pj.controller;
-
+package hkmu.wadd.pj.model;
 
 import java.util.Date;
 
-public class comment {
+public class CommentPolling {
     private Integer id;
     private String name;
     private String message;
     private Date date;
+    private Integer pollingId;
 
     public Integer getId() {
         return id;
@@ -39,5 +39,13 @@ public class comment {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public void setPollingId(int pollingId) {
+        this.pollingId = pollingId;
+    }
+
+    public int getPollingId() {
+        return pollingId;
     }
 }

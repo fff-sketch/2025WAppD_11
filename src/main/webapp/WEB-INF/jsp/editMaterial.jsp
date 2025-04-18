@@ -26,12 +26,12 @@
     <th>Delete</th>
     </thead>
     <tbody>
-    <c:forEach var="lecture" items="${lectures}">
+    <c:forEach var="material" items="${materials}">
         <tr>
-            <td>${lecture.key}</td>
-            <td>${lecture.value}</td>
-            <td><a href="editMaterial/removeLecture" modelAttribute="${lecture.key}">delete</a></td>
-            <!--<td><a href="/editMaterial/${lecture.key}">delete</a></td>-->
+            <td>${material.key}</td>
+            <td>${material.value}</td>
+            <td><a href="editMaterial/removeLecture" modelAttribute="${material.key}">delete</a></td>
+            <!--<td><a href="/editMaterial/${material.key}">delete</a></td>-->
         </tr>
     </c:forEach>
     </tbody>

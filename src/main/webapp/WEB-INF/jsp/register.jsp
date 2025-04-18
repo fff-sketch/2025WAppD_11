@@ -11,7 +11,7 @@
     <title>Register</title>
 </head>
 <body>
-<h2>Register</h2>
+<h1>Register</h1>
 <c:url var="registerUrl" value="/register"/>
 <form:form action="${registerUrl}" method="post" modelAttribute="user">
     <label>Username: <form:input path="username"/></label><br/>
@@ -21,6 +21,7 @@
     <label>Phone Number: <form:input path="phone"/></label><br/>
     <input type="submit" value="Register"/>
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-</form:form>
+</form:form><br/>
+<a href="/pj/index">Back to Home</a>
 </body>
 </html>
