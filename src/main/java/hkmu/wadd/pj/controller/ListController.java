@@ -9,10 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -39,6 +36,32 @@ public class ListController {
     public String addUserForm(Model model) {
         model.addAttribute("user", new User());
         return "addUser";
+    }
+
+    @PostMapping("/addUser")
+    @Transactional
+    public String addUser(@ModelAttribute User user, @RequestParam(value = "role") String role) {
+        String passwordWithNoop = "{noop}" + user.getPassword();
+        jdbcTemplate.update(
+                "INSERT INTO users (username, password, full_name, email, phone) VALUES (?, ?, ?, ?, ?)",
+                user.getUsername(),
+                passwordWithNoop,
+                user.getFullName(),
+                user.getEmail(),
+                user.getPhone());
+
+        if (!role.isEmpty()){
+            if (role.equals("admin")){
+                jdbcTemplate.update("INSERT INTO user_roles (username, role) VALUES (?, ?)",
+                        user.getUsername(), "ROLE_ADMIN");
+            }
+            jdbcTemplate.update("INSERT INTO user_roles (username, role) VALUES (?, ?)",
+                    user.getUsername(), "ROLE_USER");
+        }
+
+
+        return "redirect:/list";
+
     }
 
 
