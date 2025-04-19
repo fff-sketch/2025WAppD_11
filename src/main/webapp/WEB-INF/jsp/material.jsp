@@ -36,19 +36,16 @@
                 <c:forEach var="mComment" items="${mComments}">
                     <c:if test="${mComment.materialId == materialId}">
                         <tr>
-                            <td>#${index = index + 1}</td>
+                            <td>#${mindex = mindex + 1}
+                            </td>
                             <td>
                             @${mComment.name} (<fmt:formatDate value="${mComment.date}" pattern="yyyy-MM-dd"/>) said :<br/>
-                            <c:out value="${mComment.message}" escapeXml="true"/>
+                                <c:out value="${mComment.message}" escapeXml="true"/>
                             </td>
+
                         </tr>
                     </c:if>
-                    <!--<c:url value="/GuestBook/EditComment/${mComment.id}" var="myURL"/>
-                    <li>
-                        #${mComment.id} - ${mComment.name} (<fmt:formatDate value="${mComment.date}" pattern="yyyy-MM-dd"/>):
-                        [<a href="${myURL}">Edit</a>] <br/>
-                        <c:out value="${mComment.message}" escapeXml="true"/><br/>
-                    </li>-->
+
                 </c:forEach>
             </tbody>
         </table>

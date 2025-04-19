@@ -41,7 +41,7 @@
             <c:forEach var="pComment" items="${pComments}">
                 <c:if test="${pComment.pollingId == pollingId}">
                     <tr>
-                        <td>#${index = index + 1}</td>
+                        <td>#${pindex = pindex + 1}</td>
                         <td>
                             @${pComment.name} (<fmt:formatDate value="${pComment.date}" pattern="yyyy-MM-dd"/>) said :<br/>
                             <c:out value="${pComment.message}" escapeXml="true"/>

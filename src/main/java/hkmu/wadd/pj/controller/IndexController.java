@@ -8,7 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -63,7 +64,7 @@ public class IndexController {
         model.addAttribute("materialId", materialId);
         model.addAttribute("materialTitle", materialTitle);
         model.addAttribute("mComments", mComments.values());
-        model.addAttribute("index",materialTableIndex);
+        model.addAttribute("mindex",materialTableIndex);
         return "material";
     }
     @GetMapping("/materials/{materialId}/addMComment")
@@ -110,7 +111,7 @@ public class IndexController {
         model.addAttribute("options", options);
         model.addAttribute("votes", votes);
         model.addAttribute("pComments", pComments.values());
-        model.addAttribute("index",pollingTableIndex);
+        model.addAttribute("pindex",pollingTableIndex);
         return "polling";
     }
     @PostMapping("/polling/{pollingId}/vote")
@@ -215,6 +216,10 @@ public class IndexController {
     @GetMapping({"/commentHistory"})
     public String showCommentHistory(Model model) {
         //model.addAttribute("", );
+        List<CommentMaterial> mcommentsList = new ArrayList<>(mComments.values());
+        List<CommentPolling> pcommentsList = new ArrayList<>(pComments.values());
+        model.addAttribute("mcomments", mcommentsList);
+        model.addAttribute("pcomments", pcommentsList);
         return "commentHistory";
     }
 
@@ -223,7 +228,17 @@ public class IndexController {
         //model.addAttribute("", );
         return "votingHistory";
     }
+    @GetMapping("/commentHistory/deleteMaterial/{id}")
+    public RedirectView deleteMaterialComment(@PathVariable Integer id) {
+        mComments.remove(id);
+        return new RedirectView("/pj/commentHistory");
+    }
 
+    @GetMapping("/commentHistory/deletePolling/{id}")
+    public RedirectView deletePollingComment(@PathVariable Integer id) {
+        pComments.remove(id);
+        return new RedirectView("/pj/commentHistory");
+    }
     @GetMapping("/userList")
     public String shoeUseList(Model model) {
         //model.addAttribute("", );
