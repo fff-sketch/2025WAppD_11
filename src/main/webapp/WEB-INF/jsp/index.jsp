@@ -42,9 +42,9 @@
 <security:authorize access="hasRole('ADMIN')">
 </security:authorize>
 <ul>
-    <c:forEach var="lecture" items="${materials}">
+    <c:forEach var="material" items="${materials}">
         <li>
-            <a href="materials/${lecture.key}">Lecture ${lecture.key}: ${lecture.value}</a>
+            <a href="materials/${material.lectureId}">Lecture ${material.lectureId}: ${material.lectureTitle}</a>
         </li>
     </c:forEach>
 </ul>
@@ -57,9 +57,9 @@
 <security:authorize access="hasRole('ADMIN')">
 </security:authorize>
 <ul>
-    <c:forEach var="mcQuestion" items="${mcQuestions}">
+    <c:forEach var="polling" items="${pollings}">
         <li>
-            <a href="polling/${mcQuestion.key}">Question ${mcQuestion.key}: ${mcQuestion.value}</a>
+            <a href="polling/${polling.pollingId}">Question ${polling.pollingId}: ${polling.question}</a>
         </li>
     </c:forEach>
 </ul>

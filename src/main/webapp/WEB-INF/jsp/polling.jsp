@@ -15,7 +15,7 @@
             <div>
                 <input type="radio" name="optionId" value="${oStatus.index}" id="opt_${oStatus.index}">
                 <label for="opt_${oStatus.index}">
-                        ${option}<span> <strong>( ${votes[pollingId-1][oStatus.index]} votes ) </strong> </span>
+                        ${option}<span> <strong>( ${voteCount[oStatus.index]} votes ) </strong> </span>
                 </label>
             </div>
         </c:forEach>
@@ -28,30 +28,38 @@
 <c:url value="/polling/${pollingId}/addPComment" var="addCommentUrl"/>
 <a href="${addCommentUrl}">Add Comment</a><br/><br/>
 <div>
-    <c:if test="${fn:length(pComments) == 0}">
-        <p>There is no message yet.</p>
-    </c:if>
-    <c:if test="${fn:length(pComments) > 0}">
-        <table>
-            <thead>
+    <c:set var="hasComments" value="false" />
+    <c:forEach var="pComment" items="${pComments}">
+        <c:if test="${pComment.pollingId == pollingId}">
+            <c:set var="hasComments" value="true" />
+        </c:if>
+    </c:forEach>
+    <c:choose>
+        <c:when test="${not hasComments}">
+            <p>There are no comments yet.</p>
+        </c:when>
+        <c:otherwise>
+            <table>
+                <thead>
                 <td>No.</td>
                 <td>Message</td>
-            </thead>
-            <tbody>
-            <c:forEach var="pComment" items="${pComments}">
-                <c:if test="${pComment.pollingId == pollingId}">
-                    <tr>
-                        <td>#${index = index + 1}</td>
-                        <td>
-                            @${pComment.name} (<fmt:formatDate value="${pComment.date}" pattern="yyyy-MM-dd"/>) said :<br/>
-                            <c:out value="${pComment.message}" escapeXml="true"/>
-                        </td>
-                    </tr>
-                </c:if>
-            </c:forEach>
-            </tbody>
-        </table>
-    </c:if>
+                </thead>
+                <tbody>
+                <c:forEach var="pComment" items="${pComments}">
+                    <c:if test="${pComment.pollingId == pollingId}">
+                        <tr>
+                            <td>#${index = index + 1}</td>
+                            <td>
+                                @${pComment.name} (<fmt:formatDate value="${pComment.date}" pattern="yyyy-MM-dd"/>) said :<br/>
+                                <c:out value="${pComment.message}" escapeXml="true"/>
+                            </td>
+                        </tr>
+                    </c:if>
+                </c:forEach>
+                </tbody>
+            </table>
+        </c:otherwise>
+    </c:choose>
 </div>
 </body>
 </html>
