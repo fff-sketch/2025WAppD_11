@@ -23,36 +23,38 @@
 <c:url value="/materials/${materialId}/addMComment" var="addCommentUrl"/>
 <a href="${addCommentUrl}">Add Comment</a><br/><br/>
 <div>
-    <c:if test="${fn:length(mComments) == 0}">
-        <p>There is no message yet.</p>
-    </c:if>
-    <c:if test="${fn:length(mComments) > 0}">
-        <table>
-            <thead>
+    <c:set var="hasComments" value="false" />
+    <c:forEach var="mComment" items="${mComments}">
+        <c:if test="${mComment.materialId == materialId}">
+            <c:set var="hasComments" value="true" />
+        </c:if>
+    </c:forEach>
+    <c:choose>
+        <c:when test="${not hasComments}">
+            <p>There are no comments yet.</p>
+        </c:when>
+        <c:otherwise>
+            <table>
+                <thead>
                 <td>No.</td>
                 <td>Message</td>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <c:forEach var="mComment" items="${mComments}">
                     <c:if test="${mComment.materialId == materialId}">
                         <tr>
                             <td>#${index = index + 1}</td>
                             <td>
-                            @${mComment.name} (<fmt:formatDate value="${mComment.date}" pattern="yyyy-MM-dd"/>) said :<br/>
-                            <c:out value="${mComment.message}" escapeXml="true"/>
+                                @${mComment.name} (<fmt:formatDate value="${mComment.date}" pattern="yyyy-MM-dd"/>) said :<br/>
+                                <c:out value="${mComment.message}" escapeXml="true"/>
                             </td>
                         </tr>
                     </c:if>
-                    <!--<c:url value="/GuestBook/EditComment/${mComment.id}" var="myURL"/>
-                    <li>
-                        #${mComment.id} - ${mComment.name} (<fmt:formatDate value="${mComment.date}" pattern="yyyy-MM-dd"/>):
-                        [<a href="${myURL}">Edit</a>] <br/>
-                        <c:out value="${mComment.message}" escapeXml="true"/><br/>
-                    </li>-->
                 </c:forEach>
-            </tbody>
-        </table>
-    </c:if>
+                </tbody>
+            </table>
+        </c:otherwise>
+    </c:choose>
 </div>
 </body>
 </html>
