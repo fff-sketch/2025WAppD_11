@@ -8,10 +8,13 @@ CREATE TABLE IF NOT EXISTS guestbook (
 
 DROP TABLE IF EXISTS user_roles;
 DROP TABLE IF EXISTS users;
-CREATE TABLE users (
-    username VARCHAR(50) NOT NULL,
+CREATE TABLE IF NOT EXISTS users(
+    username VARCHAR(50) NOT NULL PRIMARY KEY,
     password VARCHAR(50) NOT NULL,
-    PRIMARY KEY (username)
+    full_name VARCHAR(50),
+    email VARCHAR(50),
+    phone VARCHAR(50)
+
 );
 CREATE TABLE IF NOT EXISTS user_roles (
     user_role_id INTEGER GENERATED ALWAYS AS IDENTITY,

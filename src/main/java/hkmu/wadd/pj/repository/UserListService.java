@@ -24,20 +24,18 @@ public class UserListService {
     }
 
     @Transactional
-    public void addUser(String username, String password, String fullName, String email, String phone, String[] roles) {
-        User user = new User(username, password, fullName, email, phone, roles);
+    public void addUser(String username, String password, String fullName, String email, String phone/*, String[] roles*/) {
+        User user = new User(username, password, fullName, email, phone/*, roles*/);
         userRepository.save(user);
     }
 
     @Transactional
-    public void editUser(String username, String password, String fullName, String email, String phone, String[] roles) {
+    public void editUser(String username, String password, String fullName, String email, String phone) {
         User user = userRepository.findById(username).orElse(null);
-        user.setUsername(username);
         user.setPassword(password);
         user.setFullName(fullName);
         user.setEmail(email);
         user.setPhone(phone);
-        user.setRoles(roles);
 
         userRepository.save(user);
     }

@@ -12,26 +12,25 @@ public class User {
     private String username;
     @Column(name = "password")
     private String password;
-    @Column(name = "fullName")
+    @Column(name="full_name")
     private String fullName;
     @Column(name = "email")
     private String email;
     @Column(name = "phone")
     private String phone;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserRole> roles = new ArrayList<>();
+    /*@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserRole> roles = new ArrayList<>();*/
     public User() {}
 
-    public User(String username, String password, String fullName, String email, String phone, String[] roles) {
+    public User(String username, String password, String fullName, String email, String phone/*, String[] roles*/) {
         this.username = username;
         this.password = "{noop}" + password;
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
-        for (String role : roles) {
+        /*for (String role : roles) {
             this.roles.add(new UserRole(this, role));
-        }
+        }*/
     }
 
 
@@ -75,7 +74,8 @@ public class User {
         this.phone = phone;
     }
 
-    public List<UserRole> getRoles() {
+
+/*public List<UserRole> getRoles() {
         return roles;
     }
 
@@ -84,6 +84,6 @@ public class User {
         for (String role : roles) {
             this.roles.add(new UserRole(this, role));
         }
-    }
+    }*/
 }
 

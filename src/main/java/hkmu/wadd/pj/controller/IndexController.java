@@ -23,32 +23,4 @@ public class IndexController {
         return "lecture";
     }
 
-    @Resource
-    private UserListService userListService;
-    @Resource
-    private UserRepository userRepository;
-    @GetMapping("/list")
-    public String list(ModelMap model) {
-        model.addAttribute("users", userListService.getUsers());
-        return "list";
-    }
-
-    @GetMapping("/delete/{username}")
-    public String deleteTicket(@PathVariable("username") String username) {
-        userListService.deleteUser(username);
-        return "redirect:/list";
-    }
-
-    @GetMapping("/addUser")
-    public String addUser(Model model) {
-        model.addAttribute("user", new User());
-        return "addUser";
-    }
-
-    @GetMapping("/editUser/{username}")
-    public String editUser(@PathVariable("username") String username, ModelMap model) {
-        model.addAttribute("user", userRepository.findByUsername(username));
-        return "editUser";
-    }
-
 }

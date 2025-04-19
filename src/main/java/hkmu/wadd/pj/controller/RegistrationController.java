@@ -37,13 +37,18 @@ public class RegistrationController {
             return "register";
         }
         String passwordWithNoop = "{noop}" + user.getPassword();
-        jdbcTemplate.update("INSERT INTO users (username, password) VALUES (?, ?)",
-                user.getUsername(), passwordWithNoop);
+        jdbcTemplate.update(
+                "INSERT INTO users (username, password, full_name, email, phone) VALUES (?, ?, ?, ?, ?)",
+                user.getUsername(),
+                passwordWithNoop,
+                user.getFullName(),
+                user.getEmail(),
+                user.getPhone());
 
         jdbcTemplate.update("INSERT INTO user_roles (username, role) VALUES (?, ?)",
                 user.getUsername(), "ROLE_USER");
 
-        return "index";
+        return "redirect:/index";
 
     }
 }
