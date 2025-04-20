@@ -25,6 +25,9 @@
     <h3>Lecture Title : ${materialTitle}</h3>
     <h3>Download File : <a href="#">Download lecture notes</a></h3>
 </div>
+
+
+
 <h3>Comments (about this lecture) : </h3>
 
 <security:authorize access="isAuthenticated()">

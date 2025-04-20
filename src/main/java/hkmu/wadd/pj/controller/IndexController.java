@@ -1,10 +1,17 @@
 package hkmu.wadd.pj.controller;
 
 import hkmu.wadd.pj.model.*;
+import hkmu.wadd.pj.repository.FileService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -31,6 +38,9 @@ public class IndexController {
     private final String[] mcQuestionData = {"What is your favourite University?", "How you rate your Ulife in HKMU?", "Which public transport you prefer to take to school?", "What facilities you want to have in HKMU?", "How old are you?"};
     private final String[][] mcOptionData = {{"MU", "MUHK", "Metropolitan University", "HKMU"}, {"Very Excellent", "Excellent", "Good", "Very Good"}, {"MTR", "Bus", "Minibus", "Walking"}, {"Library", "Gym", "Study Room", "Sports Facility"}, {"Under 18", "18-20", "21-23", "Over 24"}};
 
+    @Autowired
+    private FileService fileService;
+
     public IndexController() {
         for (int i = 0; i < 5; i++) {
             Integer id = i + 1;
@@ -56,10 +66,29 @@ public class IndexController {
         return this.voteIdSequence++;
     }
 
+    @PostMapping("/upload")
+    public String upload(@RequestParam("file") MultipartFile[] file) {
+        for (MultipartFile fileItem : file) {
+            fileService.saveFile(fileItem);
+        }
+        return "redirect:/index";
+    }
+
+    @GetMapping("/download/{fileId}")
+    public ResponseEntity<ByteArrayResource> download(@PathVariable int fileId) {
+        LectureFile file = fileService.getLectureFileById(fileId).get();
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(file.getFileType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment:filename=\""+file.getFileName()+"\"")
+                .body(new ByteArrayResource(file.getData()));
+    }
+
     @GetMapping({"/", "/index"})
     public String index(Model model) {
         model.addAttribute("materials", materials.values());
         model.addAttribute("pollings", pollings.values());
+        List<LectureFile> files = fileService.getFiles();
+        model.addAttribute("files", files);
         return "index";
     }
 
