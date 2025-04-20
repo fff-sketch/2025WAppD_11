@@ -12,6 +12,7 @@
     <form:textarea path="lectureTitle"/><br/><br/>
     <input type="submit" name="add" value="Add"/>
 </form:form><br/>
-<a href="/pj/index">Back to Home</a>
+<a href="/pj/index">Back to Home</a><br/><br/>
+<a href="/pj/editMaterial">Back to Edit Material</a>
 </body>
 </html>

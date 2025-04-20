@@ -1,10 +1,4 @@
-
-<%@ page import="java.util.Map" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<%@ page import="java.util.Map" %>
-
 <html>
 <head>
     <title>Materials Page</title>
@@ -12,6 +6,19 @@
 <body>
 <h1>Web Applications: Design and Development</h1>
 <h2>- Course Materials -</h2>
+
+<security:authorize access="isAuthenticated()">
+    <c:set var="currentUser">
+        <security:authentication property="principal.username"/>
+    </c:set>
+    <p>Hello, <c:out value="${currentUser}"/>!</p>
+    <c:url var="logoutUrl" value="/logout"/>
+    <form action="${logoutUrl}" method="post">
+        <input type="submit" value="Log out"/>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    </form>
+</security:authorize><br/>
+
 <a href="/pj/index">Back to Home</a><br><br>
 <div>
     <h3>Lecture Number : ${materialId}</h3>
@@ -19,9 +26,16 @@
     <h3>Download File : <a href="#">Download lecture notes</a></h3>
 </div>
 <h3>Comments (about this lecture) : </h3>
-<!--<a href="${pageContext.request.contextPath}/materials/${materialId}/addMComment">Add Comment</a>-->
-<c:url value="/materials/${materialId}/addMComment" var="addCommentUrl"/>
-<a href="${addCommentUrl}">Add Comment</a><br/><br/>
+
+<security:authorize access="isAuthenticated()">
+    <c:set var="currentUser">
+        <security:authentication property="principal.username"/>
+    </c:set>
+    <!--<a href="${pageContext.request.contextPath}/materials/${materialId}/addMComment">Add Comment</a>-->
+    <c:url value="/materials/${materialId}/addMComment/${currentUser}" var="addCommentUrl"/>
+    <a href="${addCommentUrl}">Add Comment</a><br/><br/>
+</security:authorize>
+
 <div>
     <c:set var="hasComments" value="false" />
     <c:forEach var="mComment" items="${mComments}">
@@ -45,7 +59,7 @@
                         <tr>
                             <td>#${index = index + 1}</td>
                             <td>
-                                @${mComment.name} (<fmt:formatDate value="${mComment.date}" pattern="yyyy-MM-dd"/>) said :<br/>
+                                @${mComment.name} (<fmt:formatDate value="${mComment.date}" pattern="yyyy-MM-dd, hh:mm:ss"/>) said :<br/>
                                 <c:out value="${mComment.message}" escapeXml="true"/>
                             </td>
                         </tr>

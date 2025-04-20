@@ -4,10 +4,15 @@
     <title>Home Page</title>
 </head>
 <body>
+
 <h1>Web Applications: Design and Development!</h1>
 <h2>- Home -</h2>
+
 <security:authorize access="isAuthenticated()">
-    <p>Hello, <security:authentication property="principal.username"/>!</p>
+    <c:set var="currentUser">
+        <security:authentication property="principal.username"/>
+    </c:set>
+    <p>Hello, <c:out value="${currentUser}"/>!</p>
     <c:url var="logoutUrl" value="/logout"/>
     <form action="${logoutUrl}" method="post">
         <input type="submit" value="Log out"/>
@@ -35,40 +40,54 @@
 </security:authorize>
 
 <h3>List of lectures :
-    <a href="editMaterial"> Edit </a>
+    <security:authorize access="hasRole('ADMIN')">
+        <a href="editMaterial"> Edit </a>
+    </security:authorize>
 </h3>
-<security:authorize access="hasRole('USER')">
-</security:authorize>
-<security:authorize access="hasRole('ADMIN')">
-</security:authorize>
+
 <ul>
     <c:forEach var="material" items="${materials}">
         <li>
-            <a href="materials/${material.lectureId}">Lecture ${material.lectureId}: ${material.lectureTitle}</a>
+            <security:authorize access="hasAnyRole('USER', 'ADMIN')">
+                <a href="materials/${material.lectureId}">Lecture ${material.lectureId}: ${material.lectureTitle}</a>
+            </security:authorize>
+            <security:authorize access="!hasAnyRole('USER', 'ADMIN')">
+                <a href="loginNotice">Lecture ${material.lectureId}: ${material.lectureTitle}</a>
+            </security:authorize>
         </li>
     </c:forEach>
 </ul>
 
 <h3>List of polling :
-    <a href="editPolling"> Edit </a>
+    <security:authorize access="hasRole('ADMIN')">
+        <a href="editPolling"> Edit </a>
+    </security:authorize>
 </h3>
-<security:authorize access="hasRole('USER')">
-</security:authorize>
-<security:authorize access="hasRole('ADMIN')">
-</security:authorize>
+
 <ul>
     <c:forEach var="polling" items="${pollings}">
         <li>
-            <a href="polling/${polling.pollingId}">Question ${polling.pollingId}: ${polling.question}</a>
+            <security:authorize access="hasAnyRole('USER', 'ADMIN')">
+                <a href="polling/${polling.pollingId}">Question ${polling.pollingId}: ${polling.question}</a>
+            </security:authorize>
+            <security:authorize access="!hasAnyRole('USER', 'ADMIN')">
+                <a href="loginNotice">Question ${polling.pollingId}: ${polling.question}</a>
+            </security:authorize>
         </li>
     </c:forEach>
 </ul>
 
-<security:authorize access="hasRole('ADMIN')">
+<security:authorize access="isAuthenticated()">
+    <c:set var="currentUser">
+        <security:authentication property="principal.username"/>
+    </c:set>
+    <h3>Comment History : <a href="commentHistory/${currentUser}"> Go </a></h3>
+    <h3>Voting History : <a href="votingHistory/${currentUser}"> Go </a></h3>
 </security:authorize>
-<h3>Comment History : <a href="commentHistory"> Go </a></h3>
-<h3>Voting History : <a href="votingHistory"> Go </a></h3>
-<h3>List of User : <a href="userList"> Go </a></h3>
+
+<security:authorize access="hasRole('ADMIN')">
+    <h3>List of User : <a href="userList"> Go </a></h3>
+</security:authorize>
 
 </body>
 </html>
