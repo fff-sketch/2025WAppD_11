@@ -7,9 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-import java.util.List;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -70,14 +71,15 @@ public class IndexController {
         model.addAttribute("index",materialTableIndex);
         return "material";
     }
-    @GetMapping("/materials/{materialId}/addMComment")
-    public ModelAndView addCommentForm(@PathVariable int materialId) {
+    @GetMapping("/materials/{materialId}/addMComment/{currentUser}")
+    public ModelAndView addCommentForm(@PathVariable int materialId, @PathVariable String currentUser) {
         ModelAndView modelAndView = new ModelAndView("addMComment");
         modelAndView.addObject("mCmEntry", new CommentMaterial());
         modelAndView.addObject("materialId", materialId); // Pass materialId to the form
+        modelAndView.addObject("currentUser", currentUser);
         return modelAndView;
     }
-    @PostMapping("/materials/{materialId}/addMComment")
+    @PostMapping("/materials/{materialId}/addMComment/{currentUser}")
     public RedirectView addCommentHandle(
             @PathVariable int materialId,
             @ModelAttribute("mCmEntry") CommentMaterial commentM
@@ -103,8 +105,9 @@ public class IndexController {
         model.addAttribute("index",pollingTableIndex);
         return "polling";
     }
-    @PostMapping("/polling/{pollingId}/vote")
+    @PostMapping("/polling/{pollingId}/vote/{currentUser}")
     public String handleVote(
+            @PathVariable String currentUser,
             @RequestParam(value = "questionId") int questionId,
             @RequestParam(value = "optionId") int optionId,
             Model model, HttpServletRequest request) {
@@ -118,7 +121,7 @@ public class IndexController {
 
             Integer id = getNextVoteId();
             Vote vote = new Vote();
-            vote.setUserName("xxx");
+            vote.setUserName(currentUser);
             vote.setPollingId(questionId);
             vote.setQuestion(pollings.get(questionId).getQuestion());
             vote.setOption(pollings.get(questionId).getOption()[optionId]);
@@ -138,14 +141,15 @@ public class IndexController {
             return "voteError";
         }
     }
-    @GetMapping("/polling/{pollingId}/addPComment")
-    public ModelAndView addCommentForm2(@PathVariable int pollingId) {
+    @GetMapping("/polling/{pollingId}/addPComment/{currentUser}")
+    public ModelAndView addCommentForm2(@PathVariable int pollingId, @PathVariable String currentUser) {
         ModelAndView modelAndView = new ModelAndView("addPComment");
         modelAndView.addObject("pCmEntry", new CommentPolling());
         modelAndView.addObject("pollingId", pollingId); // Pass pollingId to the form
+        modelAndView.addObject("currentUser", currentUser);
         return modelAndView;
     }
-    @PostMapping("/polling/{pollingId}/addPComment")
+    @PostMapping("/polling/{pollingId}/addPComment/{currentUser}")
     public RedirectView addCommentHandle2(
             @PathVariable int pollingId,
             @ModelAttribute("pCmEntry") CommentPolling commentP
@@ -160,6 +164,10 @@ public class IndexController {
     @GetMapping("/editMaterial")
     public String editMaterial(Model model) {
         model.addAttribute("materials", materials.values());
+        List<CommentMaterial> mcommentsList = new ArrayList<>(mComments.values());
+        model.addAttribute("mcomments", mcommentsList);
+        int index = 0;
+        model.addAttribute("index",index);
         return "editMaterial";
     }
     @GetMapping("/editMaterial/addLecture")
@@ -176,21 +184,24 @@ public class IndexController {
         this.materials.put(id, material);
         return new RedirectView("/pj/editMaterial");
     }
-    @PostMapping("/editMaterial/removeLecture")
-    public String removeLecture(@ModelAttribute int materialId) {
-        System.out.println(materialId);
-        materials.remove(materialId);
-        return "editMaterial";
+    @GetMapping("/editMaterial/removeLecture/{id}")
+    public RedirectView removeLecture(@PathVariable Integer id) {
+        materials.remove(id);
+        return new RedirectView("/pj/editMaterial");
     }
-    /*@PostMapping("/editMaterial/{materialId}")
-    public String editMaterial(@PathVariable int materialId) {
-        materials.remove(materialId);
-        return "redirect:/editMaterial";
-    }*/
+    @GetMapping("/editMaterial/deleteMaterialComment/{id}")
+    public RedirectView deleteMaterialComment(@PathVariable Integer id) {
+        mComments.remove(id);
+        return new RedirectView("/pj/editMaterial");
+    }
 
     @GetMapping("/editPolling")
     public String editPolling(Model model) {
         model.addAttribute("pollings", pollings.values());
+        List<CommentPolling> pcommentsList = new ArrayList<>(pComments.values());
+        model.addAttribute("pcomments", pcommentsList);
+        int index = 0;
+        model.addAttribute("index",index);
         return "editPolling";
     }
     @GetMapping("/editPolling/addPolling")
@@ -208,43 +219,39 @@ public class IndexController {
         this.pollings.put(id, polling);
         return new RedirectView("/pj/editPolling");
     }
-    /*@PostMapping("/editPolling/removePolling")
-    public String removePolling(@ModelAttribute int materialId) {
-        System.out.println(materialId);
-        materials.remove(materialId);
-        return "editPolling";
-    }*/
-
-    @GetMapping({"/commentHistory"})
-    public String showCommentHistory(Model model) {
-        //model.addAttribute("", );
-        List<CommentMaterial> mcommentsList = new ArrayList<>(mComments.values());
-        List<CommentPolling> pcommentsList = new ArrayList<>(pComments.values());
-        model.addAttribute("mcomments", mcommentsList);
-        model.addAttribute("pcomments", pcommentsList);
-        return "commentHistory";
+    @GetMapping("/editPolling/removePolling/{id}")
+    public RedirectView removePolling(@PathVariable Integer id) {
+        pollings.remove(id);
+        return new RedirectView("/pj/editPolling");
     }
-    @GetMapping("/commentHistory/deleteMaterial/{id}")
-    public RedirectView deleteMaterialComment(@PathVariable Integer id) {
-        mComments.remove(id);
-        return new RedirectView("/pj/commentHistory");
-    }
-
-    @GetMapping("/commentHistory/deletePolling/{id}")
+    @GetMapping("/editPolling/deletePollingComment/{id}")
     public RedirectView deletePollingComment(@PathVariable Integer id) {
         pComments.remove(id);
-        return new RedirectView("/pj/commentHistory");
+        return new RedirectView("/pj/editPolling");
     }
 
-    @GetMapping({"/votingHistory"})
+    @GetMapping({"/commentHistory/{currentUser}"})
+    public String showCommentHistory(@PathVariable String currentUser, Model model) {
+        List<CommentMaterial> mcommentsList = new ArrayList<>(mComments.values());
+        List<CommentPolling> pcommentsList = new ArrayList<>(pComments.values());
+        model.addAttribute("mComments", mcommentsList);
+        model.addAttribute("pComments", pcommentsList);
+        model.addAttribute("currentUser", currentUser);
+        int mindex = 0;
+        model.addAttribute("mindex",mindex);
+        int pindex = 0;
+        model.addAttribute("pindex",pindex);
+        return "commentHistory";
+    }
+
+    @GetMapping({"/votingHistory/{currentUser}"})
     public String showVotingHistory(Model model) {
         model.addAttribute("votes", votes.values());
         return "votingHistory";
     }
 
-    @GetMapping("/userList")
-    public String shoeUseList(Model model) {
-        //model.addAttribute("", );
-        return "userList";
+    @GetMapping("/loginNotice")
+    public String noticeToLogin() {
+        return "loginNotice";
     }
 }

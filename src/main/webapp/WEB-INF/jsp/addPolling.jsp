@@ -17,6 +17,7 @@
     <form:input path="option4"/><br/><br/>
     <input type="submit" name="add" value="Add"/>
 </form:form><br/>
-<a href="/pj/index">Back to Home</a>
+<a href="/pj/index">Back to Home</a><br/><br/>
+<a href="/pj/editPolling">Back to Edit Polling</a>
 </body>
 </html>
