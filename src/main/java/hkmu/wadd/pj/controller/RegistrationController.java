@@ -38,7 +38,7 @@ public class RegistrationController {
 
         String passwordWithNoop = "{noop}" + user.getPassword();
         jdbcTemplate.update(
-                "INSERT INTO users (username, password, fullName, email, phone) VALUES (?, ?, ?, ?, ?)",
+                "INSERT INTO users (username, password, full_name, email, phone) VALUES (?, ?, ?, ?, ?)",
                 user.getUsername(),
                 passwordWithNoop,
                 user.getFullName(),

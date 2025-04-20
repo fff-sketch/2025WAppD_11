@@ -67,6 +67,7 @@ public class IndexController {
     }
 
     @PostMapping("/upload")
+    //@PreAuthorize("hasRole('ADMIN')")
     public String upload(@RequestParam("file") MultipartFile[] file) {
         for (MultipartFile fileItem : file) {
             fileService.saveFile(fileItem);

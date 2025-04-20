@@ -91,6 +91,7 @@
 <div>
 <form action="/pj/upload" method="post" enctype="multipart/form-data">
     <input type="file" name="file" accept=".pdf,.doc,.docx,.txt" multiple required/>
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <input type="submit" value="Upload File" />
 </form>
 </div>
@@ -109,7 +110,7 @@
                 <td>${file.id}</td>
                 <td>${file.fileName}</td>
                 <td><a href="<c:url value="/download/${file.id}"/>">download</a></td>
-
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </tr>
             </c:forEach>
         </tbody>

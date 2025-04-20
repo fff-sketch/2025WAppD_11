@@ -36,6 +36,9 @@ public class SecurityConfig {
             throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
+                        //.requestMatchers("/editPolling", "/editPolling/**", "/addComment", "/editMaterial", "/editMaterial/**", "/addLecture", "/removeLecture", "addUser").hasRole("ADMIN")
+                        //.requestMatchers("/mc","/mcerror","/votesuccess","/mc/vote", "/", "/index", "/upload", "/lectures", "/lectures/**").hasRole("USER")
+
                         .requestMatchers( "/mc","/mcerror","/votesuccess","/mc/vote").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/", "/index", "/upload", "/register", "/lectures", "/lectures/**", "/editMaterial", "/editMaterial/**", "/addLecture", "/editPolling", "/editPolling/**", "/addComment").permitAll()
                         .requestMatchers("register").permitAll()
