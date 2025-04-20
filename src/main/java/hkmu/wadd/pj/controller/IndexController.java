@@ -1,7 +1,9 @@
 package hkmu.wadd.pj.controller;
 
 import hkmu.wadd.pj.model.*;
+import hkmu.wadd.pj.repository.FileRepository;
 import hkmu.wadd.pj.repository.FileService;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -66,13 +68,23 @@ public class IndexController {
         return this.voteIdSequence++;
     }
 
-    @PostMapping("/upload")
+    //@PostMapping("/upload")
+    @PostMapping("/editMaterial/upload")
     //@PreAuthorize("hasRole('ADMIN')")
     public String upload(@RequestParam("file") MultipartFile[] file) {
         for (MultipartFile fileItem : file) {
             fileService.saveFile(fileItem);
         }
-        return "redirect:/index";
+        //return "redirect:/index";
+        return "redirect:/editMaterial";
+    }
+
+    @Resource private FileRepository fileRepository;
+    @GetMapping("/editMaterial/remove/{id}")
+    public RedirectView remove(@PathVariable Integer id) {
+        LectureFile lectureFile = fileRepository.findById(id).orElse(null);
+        fileRepository.delete(lectureFile);
+        return new RedirectView("/pj/editMaterial");
     }
 
     @GetMapping("/download/{fileId}")
@@ -88,8 +100,8 @@ public class IndexController {
     public String index(Model model) {
         model.addAttribute("materials", materials.values());
         model.addAttribute("pollings", pollings.values());
-        List<LectureFile> files = fileService.getFiles();
-        model.addAttribute("files", files);
+        //List<LectureFile> files = fileService.getFiles();
+        //model.addAttribute("files", files);
         return "index";
     }
 
@@ -198,6 +210,8 @@ public class IndexController {
         model.addAttribute("mcomments", mcommentsList);
         int index = 0;
         model.addAttribute("index",index);
+        List<LectureFile> files = fileService.getFiles();
+        model.addAttribute("files", files);
         return "editMaterial";
     }
     @GetMapping("/editMaterial/addLecture")

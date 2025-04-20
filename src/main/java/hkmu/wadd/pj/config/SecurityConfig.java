@@ -40,7 +40,7 @@ public class SecurityConfig {
                         //.requestMatchers("/mc","/mcerror","/votesuccess","/mc/vote", "/", "/index", "/upload", "/lectures", "/lectures/**").hasRole("USER")
 
                         .requestMatchers( "/mc","/mcerror","/votesuccess","/mc/vote").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/", "/index", "/upload", "/register", "/lectures", "/lectures/**", "/editMaterial", "/editMaterial/**", "/addLecture", "/editPolling", "/editPolling/**", "/addComment").permitAll()
+                        .requestMatchers("/", "/download/**", "/index", "/upload", "/register", "/lectures", "/lectures/**", "/editMaterial", "/editMaterial/**", "/addLecture", "/editPolling", "/editPolling/**", "/addComment").permitAll()
                         .requestMatchers("register").permitAll()
                         .anyRequest().permitAll()
                 )

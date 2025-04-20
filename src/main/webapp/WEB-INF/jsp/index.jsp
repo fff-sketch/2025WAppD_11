@@ -88,6 +88,7 @@
 <security:authorize access="hasRole('ADMIN')">
     <h3>List of User : <a href="userList"> Go </a></h3>
 </security:authorize>
+<!--
 <div>
 <form action="/pj/upload" method="post" enctype="multipart/form-data">
     <input type="file" name="file" accept=".pdf,.doc,.docx,.txt" multiple required/>
@@ -116,5 +117,6 @@
         </tbody>
     </table>
 </div>
+-->
 </body>
 </html>
