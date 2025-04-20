@@ -1,18 +1,28 @@
 package hkmu.wadd.pj.controller;
 
+import hkmu.wadd.pj.FileRepository;
 import hkmu.wadd.pj.model.CommentMaterial;
 import hkmu.wadd.pj.model.CommentPolling;
+
+import hkmu.wadd.pj.model.FileEntity;
 import jakarta.servlet.http.HttpServletRequest;
+
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 
 @Controller
 public class IndexController {
@@ -27,6 +37,8 @@ public class IndexController {
     private final Map<Integer, String[]> mcOptions = new ConcurrentHashMap<>();
     private int[][] votes = new int[5][4];
 
+    @Autowired
+    private FileRepository fileRepository;
     public IndexController() {
         this.materials.put(1, "HelloWorld");
         this.materials.put(2, "ByeWorld");
@@ -61,6 +73,8 @@ public class IndexController {
     @GetMapping("/materials/{materialId}")
     public String showMaterialDetails(@PathVariable int materialId, Model model) {
         String materialTitle = materials.get(materialId);
+        List<FileEntity> files = fileRepository.findByMaterialId(materialId);
+        model.addAttribute("files", files);
         model.addAttribute("materialId", materialId);
         model.addAttribute("materialTitle", materialTitle);
         model.addAttribute("mComments", mComments.values());
@@ -101,6 +115,56 @@ public class IndexController {
         this.entries.put(id, c);
         return new RedirectView("."); // One way to redirect in Spring MVC
     }*/
+
+    @PostMapping("/materials/{materialId}/upload")
+    public String handleFileUpload(
+            @PathVariable int materialId,
+            @RequestParam("file") MultipartFile file,
+            Model model
+    ) {
+        String materialTitle = materials.get(materialId);
+        if (file.isEmpty()) {
+            model.addAttribute("uploadError", "Please select a file to upload.");
+        } else {
+            try {
+                FileEntity fileEntity = new FileEntity();
+                fileEntity.setMaterialId(materialId);
+                fileEntity.setFileName(file.getOriginalFilename());
+                fileEntity.setContent(file.getBytes());
+                fileEntity.setUploadDate(new Date());
+                fileRepository.save(fileEntity);
+                model.addAttribute("uploadMessage", "File uploaded successfully: " + file.getOriginalFilename());
+            } catch (IOException e) {
+                model.addAttribute("uploadError", "Failed to upload file: " + e.getMessage());
+            }
+        }
+
+        // Refresh page attributes
+        model.addAttribute("materialId", materialId);
+        model.addAttribute("materialTitle", materialTitle);
+        model.addAttribute("mComments", mComments.values());
+        model.addAttribute("mindex", materialTableIndex);
+        model.addAttribute("files", fileRepository.findByMaterialId(materialId));
+        return "material";
+    }
+
+    @GetMapping("/materials/{materialId}/download/{fileId}")
+    public void downloadFile(
+            @PathVariable int materialId,
+            @PathVariable Long fileId,
+            HttpServletResponse response
+    ) throws IOException {
+        FileEntity fileEntity = fileRepository.findById(fileId)
+                .orElseThrow(() -> new IllegalArgumentException("File not found"));
+
+        // Set response headers
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileEntity.getFileName() + "\"");
+
+        // Write file content to response
+        response.getOutputStream().write(fileEntity.getContent());
+    }
+
 
     @GetMapping("/polling/{pollingId}")
     public String showPollDetails(@PathVariable int pollingId, Model model) {

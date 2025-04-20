@@ -954,3 +954,63 @@ INSERT INTO users (username, password, fullName, email, phone) VALUES (?, ?) [21
 2025-04-18 22:55:32.205218+08:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO users (username, password, fullName, email, phone) VALUES (user.getUsername[*](), user.getPassword(), user.getFullName(), user.getEmail(), user.getPhone())"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, ,, )"; SQL statement:
 INSERT INTO users (username, password, fullName, email, phone) VALUES (user.getUsername(), user.getPassword(), user.getFullName(), user.getEmail(), user.getPhone()) [42001-232]
+2025-04-20 03:14:27.275470+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FILES" already exists; SQL statement:
+CREATE TABLE files ( id BIGINT AUTO_INCREMENT PRIMARY KEY, material_id INT NOT NULL, file_name VARCHAR(255) NOT NULL, content BLOB NOT NULL, upload_date TIMESTAMP NOT NULL ) [42101-232]
+2025-04-20 03:21:56.639929+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FILES" already exists; SQL statement:
+CREATE TABLE files ( id BIGINT AUTO_INCREMENT PRIMARY KEY, material_id INT NOT NULL, file_name VARCHAR(255) NOT NULL, content BLOB NOT NULL, upload_date TIMESTAMP NOT NULL ) [42101-232]
+2025-04-20 03:31:15.713630+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FILES" already exists; SQL statement:
+CREATE TABLE files ( id BIGINT AUTO_INCREMENT PRIMARY KEY, material_id INT NOT NULL, file_name VARCHAR(255) NOT NULL, content BLOB NOT NULL, upload_date TIMESTAMP NOT NULL ) [42101-232]
+2025-04-20 03:32:24.092655+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FILES" already exists; SQL statement:
+CREATE TABLE files ( id BIGINT AUTO_INCREMENT PRIMARY KEY, material_id INT NOT NULL, file_name VARCHAR(255) NOT NULL, content BLOB NOT NULL, upload_date TIMESTAMP NOT NULL ) [42101-232]
+2025-04-20 03:33:12.186121+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FILES" already exists; SQL statement:
+CREATE TABLE files ( id BIGINT AUTO_INCREMENT PRIMARY KEY, material_id INT NOT NULL, file_name VARCHAR(255) NOT NULL, content BLOB NOT NULL, upload_date TIMESTAMP NOT NULL ) [42101-232]
+2025-04-20 03:34:10.380660+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FILES" already exists; SQL statement:
+CREATE TABLE files ( id BIGINT AUTO_INCREMENT PRIMARY KEY, material_id INT NOT NULL, file_name VARCHAR(255) NOT NULL, content BLOB NOT NULL, upload_date TIMESTAMP NOT NULL ) [42101-232]
+2025-04-20 03:35:15.974517+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FILES" already exists; SQL statement:
+CREATE TABLE files ( id BIGINT AUTO_INCREMENT PRIMARY KEY, material_id INT NOT NULL, file_name VARCHAR(255) NOT NULL, content BLOB NOT NULL, upload_date TIMESTAMP NOT NULL ) [42101-232]
+2025-04-20 03:51:43.020661+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FILES" already exists; SQL statement:
+CREATE TABLE files ( id BIGINT AUTO_INCREMENT PRIMARY KEY, material_id INT NOT NULL, file_name VARCHAR(255) NOT NULL, content BLOB NOT NULL, upload_date TIMESTAMP NOT NULL ) [42101-232]
+2025-04-20 04:11:26.820884+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FILES" already exists; SQL statement:
+CREATE TABLE files ( id BIGINT AUTO_INCREMENT PRIMARY KEY, material_id INT NOT NULL, file_name VARCHAR(255) NOT NULL, content BLOB NOT NULL, upload_date TIMESTAMP NOT NULL ) [42101-232]
+2025-04-20 04:12:09.102251+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FILES" already exists; SQL statement:
+CREATE TABLE files ( id BIGINT AUTO_INCREMENT PRIMARY KEY, material_id INT NOT NULL, file_name VARCHAR(255) NOT NULL, content BLOB NOT NULL, upload_date TIMESTAMP NOT NULL ) [42101-232]
+2025-04-20 04:15:16.114133+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FILES" already exists; SQL statement:
+CREATE TABLE files ( id BIGINT AUTO_INCREMENT PRIMARY KEY, material_id INT NOT NULL, file_name VARCHAR(255) NOT NULL, content BLOB NOT NULL, upload_date TIMESTAMP NOT NULL ) [42101-232]
+2025-04-20 04:16:18.816513+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FILES" already exists; SQL statement:
+CREATE TABLE files ( id BIGINT AUTO_INCREMENT PRIMARY KEY, material_id INT NOT NULL, file_name VARCHAR(255) NOT NULL, content BLOB NOT NULL, upload_date TIMESTAMP NOT NULL ) [42101-232]
+2025-04-20 04:17:00.354020+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FILES" already exists; SQL statement:
+CREATE TABLE files ( id BIGINT AUTO_INCREMENT PRIMARY KEY, material_id INT NOT NULL, file_name VARCHAR(255) NOT NULL, content BLOB NOT NULL, upload_date TIMESTAMP NOT NULL ) [42101-232]
+2025-04-20 04:21:23.732707+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FILES" already exists; SQL statement:
+CREATE TABLE files ( id BIGINT AUTO_INCREMENT PRIMARY KEY, material_id INT NOT NULL, file_name VARCHAR(255) NOT NULL, content BLOB NOT NULL, upload_date TIMESTAMP NOT NULL ) [42101-232]
+2025-04-20 04:24:36.958460+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FILES" already exists; SQL statement:
+CREATE TABLE files ( id BIGINT AUTO_INCREMENT PRIMARY KEY, material_id INT NOT NULL, file_name VARCHAR(255) NOT NULL, content BLOB NOT NULL, upload_date TIMESTAMP NOT NULL ) [42101-232]
+2025-04-20 04:25:51.450988+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FILES" already exists; SQL statement:
+CREATE TABLE files ( id BIGINT AUTO_INCREMENT PRIMARY KEY, material_id INT NOT NULL, file_name VARCHAR(255) NOT NULL, content BLOB NOT NULL, upload_date TIMESTAMP NOT NULL ) [42101-232]
+2025-04-20 04:27:52.960478+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FILES" already exists; SQL statement:
+CREATE TABLE files ( id BIGINT AUTO_INCREMENT PRIMARY KEY, material_id INT NOT NULL, file_name VARCHAR(255) NOT NULL, content BLOB NOT NULL, upload_date TIMESTAMP NOT NULL ) [42101-232]
+2025-04-20 04:28:26.309058+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FILES" already exists; SQL statement:
+CREATE TABLE files ( id BIGINT AUTO_INCREMENT PRIMARY KEY, material_id INT NOT NULL, file_name VARCHAR(255) NOT NULL, content BLOB NOT NULL, upload_date TIMESTAMP NOT NULL ) [42101-232]
+2025-04-20 04:30:38.820971+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FILES" already exists; SQL statement:
+CREATE TABLE files ( id BIGINT AUTO_INCREMENT PRIMARY KEY, material_id INT NOT NULL, file_name VARCHAR(255) NOT NULL, content BLOB NOT NULL, upload_date TIMESTAMP NOT NULL ) [42101-232]
+2025-04-20 04:32:22.854627+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FILES" already exists; SQL statement:
+CREATE TABLE files ( id BIGINT AUTO_INCREMENT PRIMARY KEY, material_id INT NOT NULL, file_name VARCHAR(255) NOT NULL, content BLOB NOT NULL, upload_date TIMESTAMP NOT NULL ) [42101-232]
