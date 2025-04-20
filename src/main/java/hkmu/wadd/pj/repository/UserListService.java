@@ -24,8 +24,8 @@ public class UserListService {
     }
 
     @Transactional
-    public void addUser(String username, String password, String fullName, String email, String phone/*, String[] roles*/) {
-        User user = new User(username, password, fullName, email, phone/*, roles*/);
+    public void addUser(String username, String password, String fullName, String email, String phone, String[] roles) {
+        User user = new User(username, password, fullName, email, phone, roles);
         userRepository.save(user);
     }
 
